@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>秒杀第一个商品</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<button type="button" class="btn btn-success" onclick="miao()">秒杀</button>
+<div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">秒杀信息</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary btn-order">下单</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    function miao() {
+         $.ajax({
+            type: "POST",
+            url: "./miaosha_on_goods.php",
+            dataType:'json',
+            success: function(msg){
+                if(msg.code) {
+                    $(".modal-body p").html(msg.msg).css('text-align','center');
+                    $('.modal').modal('show')
+                } else {
+                    $(".modal-body p").html(msg.msg).css('text-align','center');
+                    $(".btn-order").remove();
+                    $('.modal').modal('show')
+                    setTimeout(function () {
+                        $('.modal').modal('hide');
+                    },1000);
+                }
+            }
+        });
+    }
+    
+    $(function ($) {
+        $(document).delegate(".btn-order",'click',function () {
+            window.location.href='./order.php';
+        })
+    })
+</script>
+</body>
+</html>
